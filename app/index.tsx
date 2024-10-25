@@ -14,17 +14,13 @@ import services from "@/constants/Services";
 import FilterIcon from "@/assets/images/CustomIcons/filter-icon.svg";
 import "@/global.css";
 import shops from "@/constants/Shops";
-import Swiper from 'react-native-swiper';
-import offer_1 from '@/assets/images/offer_1.png'
-import offer_2 from '@/assets/images/offer_2.png'
-import offer_3 from '@/assets/images/offer_3.png'
-import { router } from "expo-router";
+import Swiper from "react-native-swiper";
+import offer_1 from "@/assets/images/offer_1.png";
+import offer_2 from "@/assets/images/offer_2.png";
+import offer_3 from "@/assets/images/offer_3.png";
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
-  const images = [
-    offer_1,offer_2,offer_3
-  ]
-
+  const images = [offer_1, offer_2, offer_3];
 
   return (
     <SafeAreaView className=" flex-1">
@@ -83,24 +79,30 @@ export default function Index() {
           </View>
 
           {/* Special Offer Section  */}
-          <View className='flex-1 rounded-xl overflow-hidden justify-center items-center mt-4'>
+          <View className="flex-1 rounded-xl overflow-hidden justify-center items-center mt-4">
             <Swiper
               loop
               width={360}
               height={200}
               autoplayTimeout={3}
               autoplay
-              dot={<View className="bg-white p-1 rounded-full mr-2 "/>}
-              activeDot={<View className="bg-orange-400 p-1 rounded-full mr-2"/>}
+              pagingEnabled={false}
+              paginationStyle={{ display: "none" }}
             >
-              {images.map((item,index)=>(
-                <View key={index} className='justify-center h-[200px] w-[360px] items-center rounded-xl overflow-hidden'>
-                <Image source={item} className='w-full h-full object-contain' />
-              </View>
+              {images.map((item, index) => (
+                <View
+                  key={index}
+                  className="justify-center h-[200px] w-[360px] items-center rounded-xl overflow-hidden"
+                >
+                  <Image
+                    source={item}
+                    className="w-full h-full object-contain"
+                  />
+                </View>
               ))}
             </Swiper>
           </View>
-          
+
           {/* Services List  */}
           <View className="mt-6">
             <FlatList
@@ -115,9 +117,10 @@ export default function Index() {
                         {item.icon && <item.icon />}
                       </TouchableOpacity>
                       <Text className="text-[14px] font-bold">{item.name}</Text>
-                    </View>)
+                    </View>
+                  );
                 } else {
-                  return null
+                  return null;
                 }
               }}
             ></FlatList>
@@ -139,10 +142,16 @@ export default function Index() {
                 renderItem={({ item, index }) => (
                   <View
                     key={index}
-                    className={`mr-2 px-6 py-3 rounded-full ${item.id == 0 ? 'bg-[#FF8C42]' : 'bg-white'}  border-2 border-[#FF8C42]`}
+                    className={`mr-2 px-6 py-3 rounded-full ${
+                      item.id == 0 ? "bg-[#FF8C42]" : "bg-white"
+                    }  border-2 border-[#FF8C42]`}
                   >
                     <TouchableOpacity className="flex flex-row items-center ">
-                      <Text className={`text-[#FF8C42] ${item.id == 0 ? 'text-white' : 'text-[#FF8C42]'} font-bold`}>
+                      <Text
+                        className={`text-[#FF8C42] ${
+                          item.id == 0 ? "text-white" : "text-[#FF8C42]"
+                        } font-bold`}
+                      >
                         {item.name}
                       </Text>
                     </TouchableOpacity>
@@ -189,7 +198,7 @@ export default function Index() {
                         </View>
                       </View>
                       <Icon
-                        name={item.id == "1" ? 'bookmark' : 'bookmark-outline'}
+                        name={item.id == "1" ? "bookmark" : "bookmark-outline"}
                         size={25}
                         color={"#FF8C42"}
                       />
@@ -204,5 +213,3 @@ export default function Index() {
     </SafeAreaView>
   );
 }
-
-
