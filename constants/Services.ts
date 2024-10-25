@@ -15,7 +15,7 @@ const services = [
   },
   {
     id: 2,
-    name: "Hair Coloring",
+    name: "Coloring",
     description: "Full head coloring with premium products.",
     price: 75.0,
     type: "Hair",
@@ -64,14 +64,14 @@ const services = [
   },
   {
     id: 9,
-    name: "Makeup Application",
+    name: "Makeup",
     description: "Professional makeup for any occasion.",
     price: 60.0,
     type: "Makeup",
   },
   {
     id: 10,
-    name: "Bridal Package",
+    name: "Bridal",
     description: "Comprehensive bridal beauty package.",
     price: 300.0,
     type: "Special",

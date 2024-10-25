@@ -15,15 +15,17 @@ import services from "@/constants/Services";
 import Haircut from "@/assets/images/Haircut2.svg";
 import FilterIcon from "@/assets/images/filter-icon.svg";
 import "@/global.css";
-import { router, Router } from "expo-router";
-import { Link } from "expo-router";
 import shops from "@/constants/Shops";
+import Carousel from 'react-native-reanimated-carousel'
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { width } = Dimensions.get("window");
-  const viewPostWidth = Math.ceil(width) * 0.95;
-  console.log(viewPostWidth);
+  const images = [
+    { uri: 'https://dummyimage.com/300.jpg'},
+    { uri: 'https://dummyimage.com/300.jpg' },
+    { uri: 'https://dummyimage.com/300.jpg' },
+  ];
 
+  
   return (
     <SafeAreaView className=" flex-1">
       <ScrollView>
@@ -65,7 +67,7 @@ export default function Index() {
             <View className="flex-1 !bg-white rounded-xl overflow-hidden">
               <Searchbar
                 className="!bg-white"
-                placeholder="Search"
+                placeholder="Search Salon, Parlour & Spas..."
                 placeholderTextColor={"#000000"}
                 iconColor="#000000"
                 onChangeText={(e) => setSearchQuery(e)}
@@ -75,51 +77,53 @@ export default function Index() {
             </View>
             <View className="bg-white h-full flex flex-row rounded-xl px-5 justify-center items-center">
               <TouchableOpacity className="bg-white rounded-xl ">
-                <FilterIcon />
+                <FilterIcon/>
               </TouchableOpacity>
             </View>
           </View>
           {/* Special Offer Section  */}
-          <View className="mt-4 flex flex-row ">
-            <FlatList
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              snapToAlignment="center"
-              data={[1, 2]}
-              renderItem={({ item, index }) => (
-                <View
-                  style={{ width: viewPostWidth }}
-                  key={index}
-                  className={`h-[200px] rounded-2xl mr-3 overflow-hidden`}
-                >
-                  <Image
-                    className="h-full w-full object-contain"
-                    source={require("@/assets/images/banner.png")}
-                  />
-                </View>
-              )}
-            />
+          
+          <View className='flex-1 rounded-xl overflow-hidden justify-center items-center mt-4'>
+      <Carousel
+        loop
+        width={360} 
+        height={200} 
+        autoPlay={true}
+        autoPlayInterval={3000}
+        data={images}
+        snapEnabled={true}
+        renderItem={({ item }) => (
+          <View className='justify-center items-center mr-2'>
+            <Image source={item} className='w-full h-full ' />
+            <Text className='mt-2 text-lg text-gray-800'>Caption for Image</Text>
           </View>
+        )}
+      />
+    </View>
           {/* Services List  */}
           <View className="mt-6">
             <FlatList
               data={services}
               horizontal
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item }) => (
-                <View className="flex items-center mr-5 gap-2">
-                  <TouchableOpacity className="bg-[#FF8C42]/30 p-6 rounded-full">
-                    <Haircut height={30} width={30} />
+              renderItem={({ item }) => {
+                if(item.id != 0){
+                  return(
+                <View className="flex items-center  mr-5 gap-2">
+                  <TouchableOpacity className=" bg-[#FF8C42]/10 p-5 rounded-xl">
+                    <Haircut height={28} width={28} />
                   </TouchableOpacity>
-                  <Text className="text-lg font-bold">{item.name}</Text>
-                </View>
-              )}
+                  <Text className="text-[14px] font-bold">{item.name}</Text>
+                </View>)}else{
+                  return null
+                }
+              }}
             ></FlatList>
           </View>
           {/* nearby slide */}
           <View className="my-6 flex gap-3">
             <View className="flex flex-row my-2 justify-between">
-              <Text className="text-[1.3rem] font-extrabold">
+              <Text className="text-[1.3rem] font-extrabold ">
                 Nearby Your Location
               </Text>
               <Text className="text-[#FF8C42] text-lg font-bold">See All</Text>
@@ -132,10 +136,10 @@ export default function Index() {
                 renderItem={({ item, index }) => (
                   <View
                     key={index}
-                    className="mr-2 px-6 py-3 rounded-full bg-white border-2 border-[#FF8C42]"
+                    className={`mr-2 px-6 py-3 rounded-full ${item.id == 0 ? 'bg-[#FF8C42]' : 'bg-white'}  border-2 border-[#FF8C42]`}
                   >
                     <TouchableOpacity className="flex flex-row items-center ">
-                      <Text className="text-[#FF8C42] font-bold">
+                      <Text className={`text-[#FF8C42] ${item.id == 0 ? 'text-white' : 'text-[#FF8C42]'} font-bold`}>
                         {item.name}
                       </Text>
                     </TouchableOpacity>
@@ -152,7 +156,7 @@ export default function Index() {
                   <View className="bg-white mb-6 p-4 rounded-2xl flex flex-row gap-3">
                     <Image
                       className="h-[80px] w-[80px] rounded-2xl"
-                      source={require("@/assets/images/image5.jpeg")}
+                      source={{uri: 'https://dummyimage.com/100.jpg'}}
                     />
                     <View className="flex-1 flex-row justify-between">
                       <View className="flex gap-2">
@@ -182,7 +186,7 @@ export default function Index() {
                         </View>
                       </View>
                       <Icon
-                        name="bookmark-outline"
+                        name={item.id == "1" ? 'bookmark' : 'bookmark-outline'}
                         size={25}
                         color={"#FF8C42"}
                       />
@@ -198,8 +202,4 @@ export default function Index() {
   );
 }
 
-{
-  /* <View className="border-[1px] border-black/30 rounded-full p-2">
-                    <Haircut />
-                  </View> */
-}
+
