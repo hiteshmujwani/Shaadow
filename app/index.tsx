@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Dimensions,
   FlatList,
   Image,
   ScrollView,
@@ -8,24 +7,25 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Badge, Divider, Searchbar } from "react-native-paper";
+import { Badge, Searchbar } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Ionicons";
 import services from "@/constants/Services";
-import Haircut from "@/assets/images/Haircut2.svg";
-import FilterIcon from "@/assets/images/filter-icon.svg";
+import FilterIcon from "@/assets/images/CustomIcons/filter-icon.svg";
 import "@/global.css";
 import shops from "@/constants/Shops";
-import Carousel from 'react-native-reanimated-carousel'
+import Swiper from 'react-native-swiper';
+import offer_1 from '@/assets/images/offer_1.png'
+import offer_2 from '@/assets/images/offer_2.png'
+import offer_3 from '@/assets/images/offer_3.png'
+import { router } from "expo-router";
 export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
   const images = [
-    { uri: 'https://dummyimage.com/300.jpg'},
-    { uri: 'https://dummyimage.com/300.jpg' },
-    { uri: 'https://dummyimage.com/300.jpg' },
-  ];
+    offer_1,offer_2,offer_3
+  ]
 
-  
+
   return (
     <SafeAreaView className=" flex-1">
       <ScrollView>
@@ -77,29 +77,30 @@ export default function Index() {
             </View>
             <View className="bg-white h-full flex flex-row rounded-xl px-5 justify-center items-center">
               <TouchableOpacity className="bg-white rounded-xl ">
-                <FilterIcon/>
+                <FilterIcon />
               </TouchableOpacity>
             </View>
           </View>
+
           {/* Special Offer Section  */}
-          
           <View className='flex-1 rounded-xl overflow-hidden justify-center items-center mt-4'>
-      <Carousel
-        loop
-        width={360} 
-        height={200} 
-        autoPlay={true}
-        autoPlayInterval={3000}
-        data={images}
-        snapEnabled={true}
-        renderItem={({ item }) => (
-          <View className='justify-center items-center mr-2'>
-            <Image source={item} className='w-full h-full ' />
-            <Text className='mt-2 text-lg text-gray-800'>Caption for Image</Text>
+            <Swiper
+              loop
+              width={360}
+              height={200}
+              autoplayTimeout={3}
+              autoplay
+              dot={<View className="bg-white p-1 rounded-full mr-2 "/>}
+              activeDot={<View className="bg-orange-400 p-1 rounded-full mr-2"/>}
+            >
+              {images.map((item,index)=>(
+                <View key={index} className='justify-center h-[200px] w-[360px] items-center rounded-xl overflow-hidden'>
+                <Image source={item} className='w-full h-full object-contain' />
+              </View>
+              ))}
+            </Swiper>
           </View>
-        )}
-      />
-    </View>
+          
           {/* Services List  */}
           <View className="mt-6">
             <FlatList
@@ -107,19 +108,21 @@ export default function Index() {
               horizontal
               showsHorizontalScrollIndicator={false}
               renderItem={({ item }) => {
-                if(item.id != 0){
-                  return(
-                <View className="flex items-center  mr-5 gap-2">
-                  <TouchableOpacity className=" bg-[#FF8C42]/10 p-5 rounded-xl">
-                    <Haircut height={28} width={28} />
-                  </TouchableOpacity>
-                  <Text className="text-[14px] font-bold">{item.name}</Text>
-                </View>)}else{
+                if (item.id != 0) {
+                  return (
+                    <View className="flex items-center  mr-5 gap-2">
+                      <TouchableOpacity className=" bg-[#FF8C42]/10 p-5 rounded-xl">
+                        {item.icon && <item.icon />}
+                      </TouchableOpacity>
+                      <Text className="text-[14px] font-bold">{item.name}</Text>
+                    </View>)
+                } else {
                   return null
                 }
               }}
             ></FlatList>
           </View>
+          {/* <Divider className="mt-6" bold /> */}
           {/* nearby slide */}
           <View className="my-6 flex gap-3">
             <View className="flex flex-row my-2 justify-between">
@@ -156,7 +159,7 @@ export default function Index() {
                   <View className="bg-white mb-6 p-4 rounded-2xl flex flex-row gap-3">
                     <Image
                       className="h-[80px] w-[80px] rounded-2xl"
-                      source={{uri: 'https://dummyimage.com/100.jpg'}}
+                      source={item.ShopProfileImage}
                     />
                     <View className="flex-1 flex-row justify-between">
                       <View className="flex gap-2">
